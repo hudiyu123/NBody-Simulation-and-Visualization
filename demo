@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Print an error message and exit.
+panic() {
+	echo "ERROR: $0"
+	exit 1
+}
+
+# Get the directory in which the currently running script is located.
+cmd_dir=$(dirname "$0") || panic "cannot determine command directory"
+
+nbody_program="$cmd_dir/nbody"
+initial_data="$cmd_dir/demo_initial_data.txt"
+
+$nbody_program \
+--input-file "$initial_data" \
+--time-step 0.01 \
+--finish-step 2000000 \
+--collision-detector Direct \
+--ratio 30 \
+--boundary-condition-handler Rebound \
+--camera-position-hint 2000 \
+--colorful \
+|| panic "nbody program failed"

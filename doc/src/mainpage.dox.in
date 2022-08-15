@@ -1,0 +1,221 @@
+/// \mainpage @NBODY_FULL_NAME@ Reference Manual (Version @NBODY_VERSION@)
+/// \section Introduction
+/// The n-body problem is fundamental to many fields of study. It is a problem
+/// of predicting the individual motions of a group of objects interacting with
+/// each other. The solution for 1-body problem is trivial, and 2-body problem
+/// can be solved using Kepler's laws of planetary motion. For problems
+/// involving more bodies, the solutions are either too complex or no known
+/// solutions exist. Therefore, such problems are solved and simulated using
+/// computational methods.\n
+/// \n
+/// In this project, a program will be developed to solve the gravitational
+/// n-body problem by simulation.
+/// \section Project Architecture
+/// This project is consist of four modules:\n
+/// \n
+/// •  Configuration: Parses command line options and generates configurations
+/// for simulator and visualizer.\n
+/// •  Math: Provides basic data class (i.e., vector and matrix) and operations
+/// for simulation and visualization.\n
+/// •  Simulation: Provides functionality for nbody simulation.\n
+/// •  Visualization: Provides functionality for visualizing nbody simulation
+/// results\n
+/// \section Software Building and Installation
+/// For the purpose of building the program, the CMake tool is used. Since the
+/// program utilize features from C++20 features, the compiler which is used
+/// needs to be compatible with C++20.\n
+/// \n
+/// Currently, only Linux and macOS platform are supported to build this
+/// software.\n
+/// \n
+/// This program utilizes several libraries other than the C++20 standard
+/// library. Therefore, before building the software, users need to ensure that
+/// these libraries are installed. The versions of the libraries used by the
+/// author and known to work are as below:\n
+/// \n
+/// Linux\n
+/// •  OpenMP  version 4.5\n
+/// •  Boost   version 1.76.0\n
+/// •  OpenGL  version 2.1\n
+/// •  GLFW    version 3.2.1\n
+/// \n
+/// macOS\n
+/// •  OpenMP  version 4.5\n
+/// •  Boost   version 1.76.0\n
+/// •  OpenGL  version 3.3\n
+/// •  GLFW    version 3.3.4\n
+/// •  GLEW    version 2.2.0\n
+/// \n
+/// This program supports three types of precision for floating-point
+/// arithmetic. These types are shown as below:\n
+/// \n
+/// •  Single   - float in C++\n
+/// •  Double   - double in C++\n
+/// •  Extended - long double in C++\n
+/// \n
+/// The actual format depends on the implementation of hardware. The default
+/// type of precision is Double.\n
+/// \n
+/// In what follows, let $SOURCE_DIR denotes the top-level directory of the
+/// NBody Simulation software, $BUILD_DIR denotes a directory where build files
+/// are created, $INSTALL_DIR denotes a directory where the software is to
+/// be installed, and $PRECISION denotes the floating-point precision used for
+/// computing by the software. To build and install the NBody Simulation
+/// software, perform the following steps:\n
+/// \n
+/// 1. Generate the native build files by running the command:\n
+/// \n
+/// cmake -H$SOURCE_DIR -B$BUILD_DIR -DSIMULATION_PRECISION=$PRECISION
+/// -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR\n
+/// \n
+/// 2. Build the software by running the command:\n
+/// \n
+/// cmake --build $BUILD_DIR --clean-first\n
+/// \n
+/// 3. Install the software by running the command:\n
+/// \n
+/// cmake -- build $BUILD_DIR -- target install\n
+/// \n
+/// \section Software Running
+/// The nbody program has two input modes and three output modes, these modes
+/// are described as below:\n
+/// \n
+/// Input\n
+/// •  Simulation: Reads the initial data in Initial Data format for simulation
+/// from input.\n
+/// •  Frame: Reads simulation result in Frame format from input and visualizes
+/// the result. Only Visualization output mode is supported in Frame input mode.
+/// \n
+/// \n
+/// Output\n
+/// •  Step: Writes the simulation result in Step format to output per step.\n
+/// •  Frame: Writes the simulation result in Frame format to output per frame.
+/// \n
+/// •  Visualization: Visualizes the simulation result.\n
+/// \n
+/// Options:\n
+/// \n
+/// --input-mode $mode\n
+/// Set the input mode to $mode. Argument $mode accepts Simulation or Frame.
+/// The default type for $mode is Simulation.\n
+/// \n
+/// -I [ --input-file ] $path\n
+/// Set file path for input to $path. If this option is not specified, standard
+/// input is used.\n
+/// \n
+/// --output-mode $mode\n
+/// Set the output mode to $mode. Argument $mode accepts Step, Frame or
+/// Visualization. The default value for $mode is Visualization.\n
+/// \n
+/// -O [ --output-file ] $path\n
+/// Set file path for output to $path. This option is ignored if the output
+/// mode is Visualization. If this option is not specified, standard output is
+/// used.\n
+/// \n
+/// --output-precision $value\n
+/// Set the precision of floating-point number for output to $value. Argument
+/// $value accepts an integer that is greater than or equal to 0. The default
+/// value for $value is 6.\n
+/// \n
+/// --num-threads $num\n
+/// Set the number of threads will be used in parallel computing to $num.
+/// Argument $num accepts an integer that is greater than or equal to 1. The
+/// default value for $num is 1.\n
+/// \n
+/// --gravity-solver $type\n
+/// Set the type of gravity solver to $type. Argument $type accepts Direct or
+/// BarnesHut. The default value for $type is Direct.\n
+/// \n
+/// --finish-step $num\n
+/// Set the finish step of simulation to $num. Argument $num accepts an integer
+/// that is greater than or equal to 0. Note that, the simulation will finish
+/// immediately after start if $num equals 0. The default value for $num is 0.\n
+/// \n
+/// --G $value\n
+/// Set the gravitational constant for interaction computation to $value.
+/// Arguments $value accepts a floating-point number that is greater than 0. The
+/// default value for $value is 1.
+/// \n
+/// --softening $value\n
+/// Set the gravitational softening for interaction computation to $value.
+/// Arguments $value accepts a floating-point number that is greater than or
+/// equal to 0. The default value for $value is 0.\n
+/// \n
+/// --opening-angle $value\n
+/// Set the critical opening angle for BarnesHut gravity solver to $value.
+/// Arguments $value accepts a floating-point number that is greater than or
+/// equal to 0. The default value for $value is 1.\n
+/// \n
+/// --integrator $type\n
+/// Set the type of integrator to $type. Argument $type only accepts Leapfrog.
+/// The default value for $type is Leapfrog.\n
+/// \n
+/// --time-step $value\n
+/// Set the time step of integration to $value. Argument $value accepts a
+/// floating-point number that is greater than 0. The default value for $value
+/// is 0.05.\n
+/// \n
+/// --collision-detector $type\n
+/// Set the type of collision detector to $type. Argument $type accepts Direct
+/// or Octree. The default value for $type is Direct.\n
+/// \n
+/// --collision-resolver $type\n
+/// Set the type of collision resolver to $type. Argument $type accepts Hard
+/// or Merge. The default value for $type is Hard.\n
+/// \n
+/// --COR [ --coefficient-of-restitution ] $value\n
+/// Set the coefficient of restitution for Hard collision resolver to $value.
+/// Argument $value accepts a floating-point number in range [0, 1]. The default
+/// value for $value is 1.\n
+/// \n
+/// --merge-threshold $value\n
+/// Set the merge threshold for Hard collision resolver to $value. Argument
+/// $value accepts an integer that is greater than or equal to 0. The default
+/// value for $value 0.\n
+/// \n
+/// --boundary-condition-handler $type\n
+/// Set the type of boundary condition handler to $type. Argument $type accepts
+/// None, Open, Rebound, and Periodic. The default value for $type is None.\n
+/// \n
+/// --BoundaryCOR [ --boundary-coefficient-of-restitution ] $value\n
+/// Set the boundary coefficient of restitution for Rebound boundary condition
+/// handler to $value. Argument $value accepts a floating-point number in range
+/// [1, 0]. The default value for $value is 1.\n
+/// \n
+/// --ratio $value\n
+/// Set the ratio of visualizing speed to real time to $value. Argument $value
+/// accepts a floating-point number that is greater than 0. The default value
+/// for $value is 1.\n
+/// \n
+/// --camera-position-hint $value\n
+/// Set the initial z-axis position for camera to $value. Argument $value
+/// accepts a floating-point number that is greater than or equal to 0. The
+/// default value for $value is 0\n
+/// \n
+/// --FPS $value\n
+/// Set the FPS of visualization to $value. Argument $value accepts an integer
+/// that is greater than 0. The default value for $value is 60.\n
+/// \n
+/// --window-width $value\n
+/// Set the initial window width to $value. Argument $value accepts an integer
+/// that is greater than 0. The default value for $value is 1024.\n
+/// \n
+/// --window-height $value\n
+/// Set the initial window height to $value. Argument $value accepts an integer
+/// that is greater than 0. The default value for $value is 768.\n
+/// \n
+/// --icosphere-subdivision $level\n
+/// Set the level of subdivision for icosphere to $level. Argument $level
+/// accepts an integer that is greater than or equal to 0. The default value for
+/// $level is 3.\n
+/// \n
+/// --colorful\n
+/// Enable colorful particles for visualization. If this option is not
+/// specified, particles will have white color.\n
+/// \n
+/// --preloading\n
+/// Enable preloading of input data for Frame input mode. If this option is not
+/// specified, data will be read simultaneously while visualizing.\n
+/// \n
+/// -h [ --help]\n
+/// Prints help information and exit.
