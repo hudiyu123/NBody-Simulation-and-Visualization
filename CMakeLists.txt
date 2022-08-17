@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
-project(cpp_project LANGUAGES CXX)
+project(NBody LANGUAGES CXX)
 
 set(NBODY_FULL_NAME "Simulation and Visualization for NBody Problem")
 set(NBODY_VERSION_MAJOR 1)
