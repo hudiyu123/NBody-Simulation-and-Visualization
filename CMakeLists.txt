@@ -7,7 +7,7 @@ set(NBODY_VERSION_MAJOR 1)
 set(NBODY_VERSION_MINOR 0)
 set(NBODY_VERSION "${NBODY_VERSION_MAJOR}.${NBODY_VERSION_MINOR}")
 
-option(NBODY_ENABLE_DOX "Enable building of the documentation" true)
+option(NBODY_ENABLE_DOC "Enable building of the documentation" true)
 
 # C++ 20 is required.
 set(CMAKE_CXX_STANDARD 20)
@@ -93,6 +93,6 @@ install(TARGETS nbody DESTINATION bin)
 install(PROGRAMS demo DESTINATION bin)
 install(FILES input/demo_initial_data.txt DESTINATION bin)
 
-if (NBODY_ENABLE_DOX)
+if (NBODY_ENABLE_DOC)
   add_subdirectory(doc)
 endif ()
